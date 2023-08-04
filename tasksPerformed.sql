@@ -21,6 +21,7 @@ VALUES
     ('W10841140', 'Silicone Adhesive', 6.77, 4),
     ('WPY055980', 'High Temperature Adhesive', 13.94, 3);
 
+GO
 -- 2 Update
 
 SELECT *
@@ -31,6 +32,7 @@ UPDATE Jobs
 SET [Status] = 'In Progress', MechanicId = 3
 WHERE [Status] = 'Pending';
 
+GO
 -- 3 Delete
 
 DELETE FROM OrderParts
@@ -39,12 +41,13 @@ WHERE OrderId = 19;
 DELETE FROM Orders
 WHERE OrderId = 19;
 
+GO
 -- Drop Database WMS and created the scripts again 
 DROP DATABASE WMS
 
 -- Run the scripts again and created tables and records again
 
-
+GO
 -- 4	Mechanic Assignments
 -- Select, JOIN
 SELECT CONCAT(m.FirstName , ' ', m.LastName) AS Mechanic,
@@ -55,6 +58,7 @@ JOIN Jobs AS j
 ON m.MechanicId = j.MechanicId
 ORDER BY m.MechanicId, j.IssueDate, j.JobId;
 
+GO
 
 -- 5 Current Clients
 
@@ -67,6 +71,7 @@ ON c.ClientId = j.ClientId
 WHERE j.[Status] <> 'Finished'
 ORDER BY [Days going] DESC, c.ClientId;
 
+GO
 -- 6 Mechanic Performance
 
 SELECT Mechanic, 
@@ -84,6 +89,7 @@ FROM (
 GROUP BY Mechanic, MechanicId
 ORDER BY MechanicId;
 
+GO
 -- 7 Available Mechanics
 
 SELECT CONCAT(FirstName, ' ', LastName) AS Available FROM Mechanics
@@ -94,6 +100,7 @@ SELECT CONCAT(FirstName, ' ', LastName) AS Available FROM Mechanics
          GROUP BY MechanicId);
 
 
+GO
 -- 8 Past Expenses
 
 SELECT JobId, COALESCE(Total, 0.00) AS TotalPartsCost
@@ -109,7 +116,7 @@ FROM
 ) AS TotalCostPartsSubq
 ORDER BY COALESCE(Total, 0.00) DESC, JobId ASC;
 
-
+GO
 -- 9 Missing parts
 
 SELECT 
