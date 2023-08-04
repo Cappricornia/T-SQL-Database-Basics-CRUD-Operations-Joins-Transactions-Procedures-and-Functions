@@ -2,6 +2,8 @@ CREATE DATABASE WMS
 
 USE WMS
 
+GO
+    
 CREATE TABLE Clients (
     ClientId INT PRIMARY KEY IDENTITY NOT NULL,
     FirstName VARCHAR(50) NOT NULL,
@@ -10,6 +12,8 @@ CREATE TABLE Clients (
     CHECK (LEN(Phone) = 12)
 )
 
+GO
+    
 CREATE TABLE Mechanics (
     MechanicId INT PRIMARY KEY IDENTITY NOT NULL,
     FirstName VARCHAR(50) NOT NULL,
@@ -17,11 +21,15 @@ CREATE TABLE Mechanics (
     [Address] VARCHAR(255)
 )
 
+GO
+    
 CREATE TABLE Models (
     ModelId INT PRIMARY KEY IDENTITY NOT NULL,
     [Name] VARCHAR(50) NOT NULL UNIQUE
 )
 
+GO
+    
 CREATE TABLE Jobs(
     JobId INT PRIMARY KEY IDENTITY NOT NULL,
     ModelId INT FOREIGN KEY REFERENCES Models ([ModelId]) NOT NULL,
@@ -33,6 +41,8 @@ CREATE TABLE Jobs(
     CHECK ([Status] IN ('Pending', 'In Progress', 'Finished'))
 )
 
+GO
+    
 CREATE TABLE Orders(
     OrderId INT PRIMARY KEY IDENTITY NOT NULL,
     JobId INT FOREIGN KEY REFERENCES Jobs ([JobId]) NOT NULL,
@@ -40,11 +50,15 @@ CREATE TABLE Orders(
     Delivered BIT NOT NULL DEFAULT (0)
 )
 
+GO
+    
 CREATE TABLE Vendors(
     VendorId INT PRIMARY KEY IDENTITY NOT NULL,
     [Name] VARCHAR(50) NOT NULL UNIQUE
 )
 
+GO
+    
 CREATE TABLE Parts(
     PartId INT PRIMARY KEY IDENTITY NOT NULL,
     SerialNumber VARCHAR(50) NOT NULL UNIQUE,
@@ -56,6 +70,8 @@ CREATE TABLE Parts(
     CHECK (StockQty >= 0)
 )
 
+GO
+
 CREATE TABLE OrderParts(
     OrderId INT FOREIGN KEY REFERENCES Orders (OrderId) NOT NULL,
     PartId INT FOREIGN KEY REFERENCES Parts (PartId) NOT NULL,
@@ -64,6 +80,8 @@ CREATE TABLE OrderParts(
     CHECK(Quantity > 0)
 )
 
+GO
+    
 CREATE TABLE PartsNeeded(
     JobId INT FOREIGN KEY REFERENCES Jobs (JobId) NOT NULL,
     PartId INT FOREIGN KEY REFERENCES Parts (PartId) NOT NULL,
