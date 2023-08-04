@@ -50,8 +50,6 @@ DROP DATABASE WMS
 SELECT CONCAT(m.FirstName , ' ', m.LastName) AS Mechanic,
        j.[Status],
 	   j.IssueDate
-	   -- if we want format in 2017-01-12
-	   --CONVERT(VARCHAR(10), j.IssueDate, 23) AS IssueDate
 FROM Mechanics AS m
 JOIN Jobs AS j
 ON m.MechanicId = j.MechanicId
@@ -61,7 +59,6 @@ ORDER BY m.MechanicId, j.IssueDate, j.JobId;
 -- 5 Current Clients
 
 SELECT CONCAT(c.FirstName, ' ', c.LastName) AS Client,
-       --CONVERT(VARCHAR(10), j.IssueDate, 23) AS IssueDate,
        DATEDIFF(DAY, j.IssueDate, '2017-04-24') AS [Days going],
        j.[Status]
 FROM Clients AS c
