@@ -195,5 +195,49 @@ END;
 
 SELECT dbo.udf_GetCost(3)
 
+-- Create a user-defined procedure (usp_PlaceOrder)
 
+CREATE PROC usp_PlaceOrder
+	@jobId INT, 
+	@partSerialNumber VARCHAR(50),
+	@quantity INT
+
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION;
+
+		IF @quantity <= 0
+		BEGIN
+			-- Throw an exception with the appropriate message and state 1. 
+			RAISERROR('Part quantity must be more than zero!', 16, 1);
+			ROLLBACK TRANSACTION;
+			RETURN;
+		END
+
+		IF NOT EXISTS (SELECT 1 FROM Jobs WHERE JobId = @jobId AND [Status] = 'Active')
+		BEGIN
+			RAISERROR('This job is not active!', 16, 1);
+			ROLLBACK TRANSACTION;
+			RETURN;
+		END
+
+		COMMIT TRANSACTION;
+	END TRY
+	BEGIN CATCH
+		-- If an error occurs, rollback the transaction.
+		IF @@TRANCOUNT > 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+		DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+		DECLARE @ErrorState INT = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+	END CATCH
+END
+
+EXEC usp_PlaceOrder @jobId = 46, @partSerialNumber = '285753A', @quantity = 5;
 
