@@ -192,9 +192,11 @@ BEGIN
 END;
 
     
-
 SELECT dbo.udf_GetCost(3)
 
+
+GO
+	
 -- Create a user-defined procedure (usp_PlaceOrder)
 
 CREATE PROC usp_PlaceOrder
