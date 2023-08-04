@@ -162,7 +162,7 @@ GO
 
 -- 10 Cost Of Order
 
-CREATE FUNCTION udf_GetCost (@jobId INT)
+CREATE OR ALTER FUNCTION udf_GetCost (@jobId INT)
 RETURNS DECIMAL(8,2)
 AS
 BEGIN
